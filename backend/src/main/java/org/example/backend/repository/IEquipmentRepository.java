@@ -1,4 +1,9 @@
 package org.example.backend.repository;
 
-public interface IEquipmentRepository {
+
+import org.example.backend.model.Equipment;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IEquipmentRepository extends JpaRepository<Equipment, Integer> {
+
 }

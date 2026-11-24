@@ -1,7 +1,9 @@
 package org.example.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 
@@ -16,17 +18,32 @@ public class Equipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer equipmentId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private Category category;
 
+    @NotBlank
     private String name;
+
+    @NotNull
+    @PositiveOrZero
     private Double length;
+
+    @PositiveOrZero
     private Double weight;
+
     private String brand;
+
+    @NotNull
+    @PositiveOrZero
     private Integer numberOfUnits;
+
+    @NotNull
+    @PositiveOrZero
     private Integer repairUnits;
+
+    @NotNull
+    @PositiveOrZero
     private Integer storagedUnits;
 
 }

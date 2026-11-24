@@ -1,4 +1,4 @@
-package org.example.backend.serviceTest;
+package org.example.backend.service;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -6,7 +6,6 @@ import jakarta.validation.ValidatorFactory;
 import org.example.backend.model.Category;
 import org.example.backend.model.Equipment;
 import org.example.backend.repository.IEquipmentRepository;
-import org.example.backend.service.EquipmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

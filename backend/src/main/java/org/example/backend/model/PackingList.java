@@ -1,5 +1,6 @@
 package org.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class PackingList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +32,6 @@ public class PackingList {
     private String comment;
 
     @OneToMany(mappedBy = "packingList")
-    private List<EquipmentPackingList> equipmentPackingList;
+    @JsonManagedReference("packinglist-reference")
+    private List<EquipmentPackingList> equipmentPackingLists;
 }

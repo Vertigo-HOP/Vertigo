@@ -19,7 +19,6 @@ public class EquipmentPackingList {
     private Integer equipmentPackingListId;
 
     @ManyToOne
-    @JsonBackReference("equipment-reference")
     @JoinColumn(name = "equipment_id", nullable = false)
     private Equipment equipment;
 

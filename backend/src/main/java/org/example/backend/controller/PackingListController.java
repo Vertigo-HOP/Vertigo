@@ -1,14 +1,16 @@
 package org.example.backend.controller;
 
+import jakarta.validation.Valid;
+import org.example.backend.dto.EquipmentPackingListRequestDTO;
+import org.example.backend.dto.EquipmentPackingListResponseDTO;
 import org.example.backend.model.PackingList;
 import org.example.backend.service.PackingListService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/packinglist")
+@RequestMapping("/api/packinglist")
 public class PackingListController {
 
     private final PackingListService packingListService;
@@ -17,8 +19,15 @@ public class PackingListController {
         this.packingListService = packingListService;
     }
 
-    @PostMapping("/add")
-    public PackingList packingList(@RequestBody PackingList packingList) {
-        return packingListService.addPackingList(packingList);
+    @PostMapping("/create")
+    public PackingList packingList(@Valid @RequestBody PackingList packingList) {
+        return packingListService.createPackingList(packingList);
+    }
+
+    @PostMapping("/{id}/equipment")
+    public ResponseEntity<EquipmentPackingListResponseDTO> addEquipment(@PathVariable Integer id, @Valid @RequestBody EquipmentPackingListRequestDTO requestDTO) {
+        EquipmentPackingListResponseDTO responseDTO = packingListService.createEquipment(id, requestDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 }

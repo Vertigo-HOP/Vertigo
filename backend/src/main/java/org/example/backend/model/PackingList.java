@@ -2,6 +2,8 @@ package org.example.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +22,15 @@ public class PackingList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer packingListId;
 
-    @Column(nullable = false)
+    @NotBlank
     private String title;
 
+    @NotNull
     private LocalDate startDate;
+    @NotNull
     private LocalDate endDate;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private PackingListStatus status;
 

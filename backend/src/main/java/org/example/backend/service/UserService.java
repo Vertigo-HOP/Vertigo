@@ -7,6 +7,8 @@ import org.example.backend.repository.IUserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -56,6 +58,14 @@ public class UserService {
         if(!containsUppercase || !containsDigit){
             throw new IllegalArgumentException("Password must contain at least one uppercase and one number");
         }
+    }
+
+    public List<UserResponseDTO> readAllUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserResponseDTO(
+                        user.getUserId(), user.getMail(), user.getName(),user.getRole()
+                )).toList();
     }
 
 }

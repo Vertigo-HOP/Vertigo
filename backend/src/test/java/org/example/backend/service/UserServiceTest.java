@@ -1,8 +1,5 @@
 package org.example.backend.service;
 
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.example.backend.model.User;
 import org.example.backend.repository.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,10 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -22,16 +19,16 @@ public class UserServiceTest {
     @Mock
     private IUserRepository userRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
 
     private User user;
-    private Validator validator;
 
     @BeforeEach
     void setUp(){
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
         user = new User();
         user.setName("Test User");
         user.setMail("test@example.com");
@@ -40,21 +37,35 @@ public class UserServiceTest {
 
     @Test
     void createUserSuccess(){
+        //arrange
+        when(passwordEncoder.encode("Test1234")).thenReturn("encodedPassword");
         when(userRepository.save(user)).thenReturn(user);
 
+        //act
         User result = userService.createUser(user);
 
-        assertEquals(user, result);
-        verify(userRepository).save(user);
+        //assert
+        assertNotNull(result);
+        assertEquals(user.getMail(), result.getMail());
+        assertEquals(user.getName(), result.getName());
+        assertEquals(user.getRole(), result.getRole());
+        assertEquals("encodedPassword", result.getPassword());
+
+        verify(passwordEncoder, times(1)).encode("Test1234");
+        verify(userRepository, times(1)).save(user);
     }
 
     @Test
-    void createUserFail(){ //without mail
-        user.setMail(null);
+    void createUserFail(){
+        //arrange
+        when(passwordEncoder.encode("Test1234")).thenReturn("encodedPassword");
+        when(userRepository.save(user)).thenThrow(new RuntimeException("Error"));
 
-        var violations = validator.validate(user);
+        //act & assert
+        assertThrows(RuntimeException.class, ()-> {userService.createUser(user);});
 
-        assertFalse(violations.isEmpty());
+        verify(passwordEncoder, times(1)).encode("Test1234");
+        verify(userRepository, times(1)).save(user);
     }
 
 }

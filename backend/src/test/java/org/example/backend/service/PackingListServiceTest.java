@@ -3,7 +3,6 @@ package org.example.backend.service;
 import org.example.backend.model.PackingList;
 import org.example.backend.model.PackingListStatus;
 import org.example.backend.repository.IPackingListRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +45,7 @@ class PackingListServiceTest {
                 .thenReturn(packingList);
 
         // ACT
-        PackingList result = packingListService.addPackingList(packingList);
+        PackingList result = packingListService.createPackingList(packingList);
 
         // ASSERT
         assertNotNull(result);
@@ -68,7 +67,7 @@ class PackingListServiceTest {
 
         // ACT & ASSERT
         assertThrows(RuntimeException.class, () -> {
-            packingListService.addPackingList(packingList);
+            packingListService.createPackingList(packingList);
         });
 
         verify(packingListRepository).save(packingList);

@@ -15,7 +15,7 @@ public class EquipmentService {
         this.equipmentRepository = equipmentRepository;
     }
 
-    public EquipmentResponseDTO addEquipment (EquipmentRequestDTO request){
+    public EquipmentResponseDTO createEquipment(EquipmentRequestDTO request){
         Equipment equipment = new Equipment();
 
         equipment.setCategory(request.category());

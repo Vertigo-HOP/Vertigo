@@ -22,8 +22,8 @@ public class EquipmentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<EquipmentResponseDTO> equipment(@Valid @RequestBody EquipmentRequestDTO request){
-        EquipmentResponseDTO response = equipmentService.addEquipment(request);
+    public ResponseEntity<EquipmentResponseDTO> createEquipment(@Valid @RequestBody EquipmentRequestDTO request){
+        EquipmentResponseDTO response = equipmentService.createEquipment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
     }

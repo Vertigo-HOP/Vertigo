@@ -55,7 +55,7 @@ public class EquipmentServiceTest {
         when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
 
         //act
-        EquipmentResponseDTO result = equipmentService.addEquipment(request);
+        EquipmentResponseDTO result = equipmentService.createEquipment(request);
 
        //assert
         assertNotNull(result);
@@ -79,7 +79,7 @@ public class EquipmentServiceTest {
 
         // act & assert
         assertThrows(RuntimeException.class, () -> {
-            equipmentService.addEquipment(request);
+            equipmentService.createEquipment(request);
         });
 
         verify(equipmentRepository, times(1)).save(any(Equipment.class));

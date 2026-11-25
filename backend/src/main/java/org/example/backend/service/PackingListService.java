@@ -2,6 +2,8 @@ package org.example.backend.service;
 
 import org.example.backend.dto.EquipmentPackingListRequestDTO;
 import org.example.backend.dto.EquipmentPackingListResponseDTO;
+import org.example.backend.dto.PackingListRequestDTO;
+import org.example.backend.dto.PackingListResponseDTO;
 import org.example.backend.model.Equipment;
 import org.example.backend.model.EquipmentPackingList;
 import org.example.backend.model.PackingList;
@@ -25,8 +27,32 @@ public class PackingListService {
         this.equipmentPackingListRepository = equipmentPackingListRepository;
     }
 
-    public PackingList createPackingList(PackingList packingList) {
-        return packingListRepository.save(packingList);
+    public PackingListResponseDTO createPackingList(PackingListRequestDTO requestDTO) {
+
+        if (requestDTO.endDate().isBefore(requestDTO.startDate())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "End date cannot be before start date"
+            );
+        }
+
+        PackingList packingList = new PackingList();
+
+        packingList.setTitle(requestDTO.title());
+        packingList.setStartDate(requestDTO.startDate());
+        packingList.setEndDate(requestDTO.endDate());
+        packingList.setStatus(requestDTO.status());
+        packingList.setComment(requestDTO.comment());
+
+        PackingList createdPackingList = packingListRepository.save(packingList);
+
+        return new PackingListResponseDTO(
+                createdPackingList.getPackingListId(),
+                createdPackingList.getTitle(),
+                createdPackingList.getStartDate(),
+                createdPackingList.getEndDate(),
+                createdPackingList.getStatus(),
+                createdPackingList.getComment()
+        );
     }
 
     public EquipmentPackingListResponseDTO createEquipment( 
@@ -54,13 +80,13 @@ public class PackingListService {
         equipmentPackingList.setQuantity(requestDTO.quantity());
         equipmentPackingList.setPackedQuantity(0);
 
-        EquipmentPackingList saved = equipmentPackingListRepository.save(equipmentPackingList);
+        EquipmentPackingList createdEquipmentPackingList = equipmentPackingListRepository.save(equipmentPackingList);
 
         return new EquipmentPackingListResponseDTO(
-                saved.getEquipmentPackingListId(),
-                saved.getEquipment().getEquipmentId(),
-                saved.getQuantity(),
-                saved.getPackedQuantity()
+                createdEquipmentPackingList.getEquipmentPackingListId(),
+                createdEquipmentPackingList.getEquipment().getEquipmentId(),
+                createdEquipmentPackingList.getQuantity(),
+                createdEquipmentPackingList.getPackedQuantity()
         );
     }
 }

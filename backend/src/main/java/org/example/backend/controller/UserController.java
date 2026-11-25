@@ -38,3 +38,4 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
+

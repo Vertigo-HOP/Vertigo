@@ -1,8 +1,7 @@
 package org.example.backend.service;
 
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
+import org.example.backend.dto.EquipmentRequestDTO;
+import org.example.backend.dto.EquipmentResponseDTO;
 import org.example.backend.model.Category;
 import org.example.backend.model.Equipment;
 import org.example.backend.repository.IEquipmentRepository;
@@ -14,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EquipmentServiceTest {
@@ -27,12 +26,18 @@ public class EquipmentServiceTest {
     private EquipmentService equipmentService;
 
     private Equipment equipment;
-    private Validator validator;
+    private EquipmentRequestDTO request;
 
     @BeforeEach
     void setUp(){
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        request = new EquipmentRequestDTO(Category.HDMI_CABLES,
+                "HDMI Cable",
+                0.2,
+                "Samsung",
+                20,
+                0,
+                20);
+
         equipment = new Equipment();
         equipment.setEquipmentId(1);
         equipment.setName("HDMI Cable");
@@ -45,15 +50,40 @@ public class EquipmentServiceTest {
     }
 
     @Test
-    void addEquipmentSuccess(){
-        when(equipmentRepository.save(equipment)).thenReturn(equipment);
+    void createEquipmentSuccess(){
+        //arrange
+        when(equipmentRepository.save(any(Equipment.class))).thenReturn(equipment);
 
-        Equipment result = equipmentService.addEquipment(equipment);
+        //act
+        EquipmentResponseDTO result = equipmentService.createEquipment(request);
 
-        assertEquals(equipment, result);
-        verify(equipmentRepository).save(equipment);
+       //assert
+        assertNotNull(result);
+        assertEquals(equipment.getEquipmentId(), result.equipmentId());
+        assertEquals(equipment.getCategory(), result.category());
+        assertEquals(equipment.getName(), result.name());
+        assertEquals(equipment.getWeight(), result.weight());
+        assertEquals(equipment.getBrand(), result.brand());
+        assertEquals(equipment.getNumberOfUnits(), result.numberOfUnits());
+        assertEquals(equipment.getRepairUnits(), result.repairUnits());
+        assertEquals(equipment.getStoragedUnits(), result.storagedUnits());
+
+        verify(equipmentRepository, times(1)).save(any(Equipment.class));
     }
 
+    @Test
+    void createEquipmentFail(){
+        // arrange
+        when(equipmentRepository.save(any(Equipment.class)))
+                .thenThrow(new RuntimeException("Error"));
+
+        // act & assert
+        assertThrows(RuntimeException.class, () -> {
+            equipmentService.createEquipment(request);
+        });
+
+        verify(equipmentRepository, times(1)).save(any(Equipment.class));
+    }
 
 
 }

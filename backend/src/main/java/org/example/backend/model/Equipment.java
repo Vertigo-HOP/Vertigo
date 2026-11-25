@@ -25,10 +25,6 @@ public class Equipment {
     @NotBlank
     private String name;
 
-    @NotNull
-    @PositiveOrZero
-    private Double length;
-
     @PositiveOrZero
     private Double weight;
 

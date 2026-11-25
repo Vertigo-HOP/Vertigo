@@ -39,17 +39,17 @@ public class UserServiceTest {
     }
 
     @Test
-    void addUserSuccess(){
+    void createUserSuccess(){
         when(userRepository.save(user)).thenReturn(user);
 
-        User result = userService.addUser(user);
+        User result = userService.createUser(user);
 
         assertEquals(user, result);
         verify(userRepository).save(user);
     }
 
     @Test
-    void addUserFail(){ //without mail
+    void createUserFail(){ //without mail
         user.setMail(null);
 
         var violations = validator.validate(user);

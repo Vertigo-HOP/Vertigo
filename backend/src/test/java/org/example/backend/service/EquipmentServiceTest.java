@@ -56,7 +56,7 @@ public class EquipmentServiceTest {
     }
 
     @Test
-    void addEquipmentFail(){
+    void addEquipmentFail(){ //negative length
         equipment.setLength(-5.2);
 
         var violations = validator.validate(equipment);

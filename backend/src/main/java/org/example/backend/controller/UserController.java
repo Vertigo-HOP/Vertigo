@@ -23,16 +23,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')") - Fjernet indtil login funktionalitet er implementeret.
     @PostMapping("/add")
-    public ResponseEntity<UserResponseDTO> addUser(@Valid @RequestBody UserRequestDTO request){
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO request){
         User user = new User();
         user.setMail(request.mail());
         user.setName(request.name());
         user.setPassword(request.password());
         user.setRole(request.role());
 
-        User createdUser = userService.addUser(user);
+        User createdUser = userService.createUser(user);
 
         UserResponseDTO response = new UserResponseDTO(createdUser.getUserId(), createdUser.getMail(), createdUser.getName(), createdUser.getRole());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

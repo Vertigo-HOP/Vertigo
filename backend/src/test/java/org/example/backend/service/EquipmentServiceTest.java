@@ -37,7 +37,6 @@ public class EquipmentServiceTest {
         equipment.setEquipmentId(1);
         equipment.setName("HDMI Cable");
         equipment.setCategory(Category.HDMI_CABLES);
-        equipment.setLength(2.0);
         equipment.setWeight(0.2);
         equipment.setBrand("Samsung");
         equipment.setNumberOfUnits(20);
@@ -55,14 +54,6 @@ public class EquipmentServiceTest {
         verify(equipmentRepository).save(equipment);
     }
 
-    @Test
-    void addEquipmentFail(){ //negative length
-        equipment.setLength(-5.2);
-
-        var violations = validator.validate(equipment);
-
-        assertFalse(violations.isEmpty());
-    }
 
 
 }

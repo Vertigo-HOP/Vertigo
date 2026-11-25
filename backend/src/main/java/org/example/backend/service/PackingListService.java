@@ -29,7 +29,7 @@ public class PackingListService {
         return packingListRepository.save(packingList);
     }
 
-    public EquipmentPackingListResponseDTO createEquipment( /* SKAL DET VÆRE CREATE ELLER ADD */
+    public EquipmentPackingListResponseDTO createEquipment( 
             Integer packingListId,
             EquipmentPackingListRequestDTO requestDTO) {
         if (requestDTO.quantity() <= 0) {

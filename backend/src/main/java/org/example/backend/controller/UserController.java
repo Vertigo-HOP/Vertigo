@@ -3,7 +3,6 @@ package org.example.backend.controller;
 import jakarta.validation.Valid;
 import org.example.backend.dto.UserRequestDTO;
 import org.example.backend.dto.UserResponseDTO;
-import org.example.backend.model.User;
 import org.example.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +23,9 @@ public class UserController {
     }
 
    // @PreAuthorize("hasRole('ADMIN')") - Fjernet indtil login funktionalitet er implementeret.
-    @PostMapping("/add")
+    @PostMapping("/create")
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO request){
-        User user = new User();
-        user.setMail(request.mail());
-        user.setName(request.name());
-        user.setPassword(request.password());
-        user.setRole(request.role());
-
-        User createdUser = userService.createUser(user);
-
-        UserResponseDTO response = new UserResponseDTO(createdUser.getUserId(), createdUser.getMail(), createdUser.getName(), createdUser.getRole());
+        UserResponseDTO response = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

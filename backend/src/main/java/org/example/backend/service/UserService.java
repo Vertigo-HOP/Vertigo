@@ -1,8 +1,9 @@
 package org.example.backend.service;
 
+import org.example.backend.dto.UserRequestDTO;
+import org.example.backend.dto.UserResponseDTO;
 import org.example.backend.model.User;
 import org.example.backend.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,24 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User createUser(User user){
+    public UserResponseDTO createUser(UserRequestDTO request){
+        User user = new User();
+        user.setMail(request.mail());
+        user.setName(request.name());
+        user.setPassword(request.password());
+        user.setRole(request.role());
+
         validateMail(user.getMail());
         validatePassword(user.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userRepository.save(user);
+        User createdUser = userRepository.save(user);
+
+        return new UserResponseDTO(createdUser.getUserId(),
+                createdUser.getMail(),
+                createdUser.getName(),
+                createdUser.getRole());
     }
 
     public void validateMail(String mail){

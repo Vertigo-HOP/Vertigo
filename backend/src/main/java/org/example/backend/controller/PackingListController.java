@@ -5,7 +5,6 @@ import org.example.backend.dto.EquipmentPackingListRequestDTO;
 import org.example.backend.dto.EquipmentPackingListResponseDTO;
 import org.example.backend.dto.PackingListRequestDTO;
 import org.example.backend.dto.PackingListResponseDTO;
-import org.example.backend.model.PackingList;
 import org.example.backend.service.PackingListService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

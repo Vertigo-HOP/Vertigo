@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/equipment")
 public class EquipmentController {
@@ -29,6 +31,13 @@ public class EquipmentController {
     public ResponseEntity<EquipmentResponseDTO> readEquipmentById (@PathVariable Integer equipmentId){
         EquipmentResponseDTO response = equipmentService.readEquipmentById(equipmentId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/equipments")
+    public ResponseEntity<List<EquipmentResponseDTO>> readAllEquipments(){
+        List<EquipmentResponseDTO> reponse = equipmentService.readAllEquipments();
+
+        return ResponseEntity.ok(reponse);
     }
 
 

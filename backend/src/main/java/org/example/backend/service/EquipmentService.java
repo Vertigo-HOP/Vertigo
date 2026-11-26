@@ -7,6 +7,8 @@ import org.example.backend.model.Equipment;
 import org.example.backend.repository.IEquipmentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EquipmentService {
 
@@ -42,6 +44,18 @@ public class EquipmentService {
         return new EquipmentResponseDTO(equipment.getEquipmentId(), equipment.getCategory(),
                 equipment.getName(), equipment.getWeight(), equipment.getBrand(), equipment.getNumberOfUnits(),
                 equipment.getRepairUnits(), equipment.getStoragedUnits());
+    }
+
+    public List<EquipmentResponseDTO> readAllEquipments (){
+        List<Equipment> equipments = equipmentRepository.findAll();
+
+        return equipments.stream()
+                .map(equipment -> new EquipmentResponseDTO(
+                        equipment.getEquipmentId(), equipment.getCategory(), equipment.getName(),
+                        equipment.getWeight(), equipment.getBrand(), equipment.getNumberOfUnits(),
+                        equipment.getRepairUnits(), equipment.getStoragedUnits()
+                ))
+                .toList();
     }
 
 

@@ -1,4 +1,4 @@
-<!-- <script>
+<script>
 
   import { onMount } from 'svelte';
 
@@ -8,7 +8,8 @@
   onMount(async () => {
     try {
       const response = await fetch(
-              'http://localhost:8080/api/equipment'
+              'https://vertigo-backend-seven.vercel.app/api/equipment/equipments'
+             // 'http://localhost:8080/api/equipment'
       );
 
       if(!response.ok) {
@@ -36,10 +37,11 @@
 {/if}
 
 
--->
 
+<!--
 <script>
   import Login from './pages/Login.svelte';
 </script>
 
 <Login />
+-->

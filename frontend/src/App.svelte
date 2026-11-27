@@ -8,8 +8,7 @@
   onMount(async () => {
     try {
       const response = await fetch(
-              'https://vertigo-backend-seven.vercel.app/api/equipment/equipments'
-             // 'http://localhost:8080/api/equipment'
+              '${import.meta.env.VITE_API_URL}/api/equipment/equipments'
       );
 
       if(!response.ok) {

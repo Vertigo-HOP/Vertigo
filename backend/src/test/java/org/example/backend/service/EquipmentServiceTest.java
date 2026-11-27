@@ -2,6 +2,7 @@ package org.example.backend.service;
 
 import org.example.backend.dto.EquipmentRequestDTO;
 import org.example.backend.dto.EquipmentResponseDTO;
+import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.model.Category;
 import org.example.backend.model.Equipment;
 import org.example.backend.repository.IEquipmentRepository;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -83,6 +86,38 @@ public class EquipmentServiceTest {
         });
 
         verify(equipmentRepository, times(1)).save(any(Equipment.class));
+    }
+
+    @Test
+    void readEquipmentByIdSuccess(){
+        //arrange
+        when(equipmentRepository.findById(1)).thenReturn(Optional.of(equipment));
+
+        //act
+        EquipmentResponseDTO result = equipmentService.readEquipmentById(1);
+
+        //assert
+        assertEquals(equipment.getEquipmentId(), result.equipmentId());
+        assertEquals(equipment.getName(), result.name());
+        assertEquals(equipment.getCategory(), result.category());
+        assertEquals(equipment.getWeight(), result.weight());
+        assertEquals(equipment.getBrand(), result.brand());
+        assertEquals(equipment.getNumberOfUnits(), result.numberOfUnits());
+        assertEquals(equipment.getRepairUnits(), result.repairUnits());
+        assertEquals(equipment.getStoragedUnits(), result.storagedUnits());
+
+        verify(equipmentRepository).findById(1);
+    }
+
+    @Test
+    void readEquipmentByIdFail(){
+        //arrange
+        when(equipmentRepository.findById(10)).thenReturn(Optional.empty());
+
+        //act & assert
+        assertThrows(ResourceNotFoundException.class, () -> {equipmentService.readEquipmentById(10);});
+
+        verify(equipmentRepository, times(1)).findById(10);
     }
 
 
